@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class itemPickup : MonoBehaviour
 {
-    // Start is called before the first frame update
     public item item;
-    
+
     void Pickup()
     {
-        inventoryManager.Instance.Add(item);
+        manager.Instance.AddItem(item); // Changed from Add to AddItem
         Destroy(gameObject);
     }
+
     private void OnMouseDown()
     {
         Pickup();

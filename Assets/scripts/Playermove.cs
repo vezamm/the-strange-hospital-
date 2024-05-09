@@ -1,11 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-
 [RequireComponent(typeof(CharacterController))]
-
 public class Playermove : MonoBehaviour
 {
     public float walkingSpeed = 7.5f;
@@ -15,47 +12,52 @@ public class Playermove : MonoBehaviour
     public Camera playerCamera;
     public float lookSpeed = 2.0f;
     public float lookXLimit = 45.0f;
-    public bool allowcamerarotation = true;
-    float attente_jump = 5.0f;
-    float timing_jump = 0.0f;
-    public int[] jumpsperformed = new int[2];
-    public int i = 0;
+    public bool allowCameraRotation = true;
+    public float waitTimeBetweenJumps = 5.0f;
 
-    CharacterController characterController;
-    Vector3 moveDirection = Vector3.zero;
-    float rotationX = 0;
-
-    [HideInInspector]
-    public bool canMove = true;
+    private CharacterController characterController;
+    private Vector3 moveDirection = Vector3.zero;
+    private float rotationX = 0;
+    private float timingJump = 0.0f;
+    private int jumpsPerformed = 0;
+    private bool canMove = true;
 
     void Start()
     {
         characterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
-
     }
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            ToggleMovement();
+            return;
+        }
+
+        if (!canMove)
+            return;
+
         // We are grounded, so recalculate move direction based on axes
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
         // Press Left Shift to run
         bool isRunning = Input.GetKey(KeyCode.LeftShift);
-        float curSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * (Input.GetAxis("Vertical")) : 0;
-        float curSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * (Input.GetAxis("Horizontal")) : 0;
+        float curSpeedX = (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Vertical");
+        float curSpeedY = (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal");
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
-
-        if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
+        if (Input.GetButtonDown("Jump") && characterController.isGrounded)
         {
-            timing_jump += Time.deltaTime;
+            timingJump = Time.time;
             Jump(jumpSpeed);
-            if (timing_jump < attente_jump && i == 2)
+            jumpsPerformed++;
+            if (jumpsPerformed == 2)
             {
-                Jump(jumpSpeed * 2);
+                jumpsPerformed = 1;
             }
         }
         else
@@ -74,8 +76,8 @@ public class Playermove : MonoBehaviour
         // Move the controller
         characterController.Move(moveDirection * Time.deltaTime);
 
-        //Player and Camera rotation
-        if (canMove && allowcamerarotation == true)
+        // Player and Camera rotation
+        if (allowCameraRotation)
         {
             rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
             rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
@@ -83,10 +85,19 @@ public class Playermove : MonoBehaviour
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
         }
     }
-    void Jump(float jumpspeed)
+
+    void Jump(float jumpSpeed)
     {
-        moveDirection.y = jumpspeed;
-        i++;
-        if (i == 2) { i = 1; }
+        moveDirection.y = jumpSpeed;
+        if (Time.time - timingJump < waitTimeBetweenJumps && jumpsPerformed == 2)
+        {
+            moveDirection.y *= 2;
+        }
+    }
+
+    void ToggleMovement()
+    {
+        canMove = !canMove;
+        Cursor.lockState = canMove ? CursorLockMode.Locked : CursorLockMode.None;
     }
 }
