@@ -30,11 +30,11 @@ public class Playermove : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            ToggleMovement();
-            return;
-        }
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    ToggleMovement();
+        //    return;
+        //}
 
         if (!canMove)
             return;
@@ -77,7 +77,7 @@ public class Playermove : MonoBehaviour
         characterController.Move(moveDirection * Time.deltaTime);
 
         // Player and Camera rotation
-        if (allowCameraRotation)
+        if (allowCameraRotation&&canMove)
         {
             rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
             rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
@@ -95,9 +95,13 @@ public class Playermove : MonoBehaviour
         }
     }
 
-    void ToggleMovement()
+    public void ToggleMovement()
     {
         canMove = !canMove;
         Cursor.lockState = canMove ? CursorLockMode.Locked : CursorLockMode.None;
     }
+    //public void Togglecamrot(bool enablecamera)
+    //{
+    //    allowcamerarotation = enablecamera;
+    //}
 }

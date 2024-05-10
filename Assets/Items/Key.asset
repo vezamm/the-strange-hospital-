@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 88a8baa9e58e032428031caa62a16823, type: 3}
-  m_Name: Red Card
+  m_Name: Key
   m_EditorClassIdentifier: 
-  id: 0
-  itemName: Red card
-  value: 20
-  icon: {fileID: 21300000, guid: 73a351ee1a6ffe84791f3ba0714df6db, type: 3}
+  id: 1
+  itemName: Key
+  value: 0
+  icon: {fileID: 21300000, guid: 13c925c9c6716194f9fe832914b37154, type: 3}

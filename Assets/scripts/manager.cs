@@ -35,6 +35,10 @@ public class manager : MonoBehaviour
 
     public void ListItem()
     {
+        foreach(Transform item in ItemContent)
+        {
+            Destroy(item.gameObject);
+        }
         foreach (item item in items)
         {
             GameObject obj = Instantiate(InventoryItem, ItemContent);
