@@ -6,14 +6,17 @@ public class itemPickup : MonoBehaviour
 {
     public item item;
 
-    void Pickup()
+    public void Pickup()
     {
-        manager.Instance.AddItem(item); // Changed from Add to AddItem
+        manager.Instance.ADD(item); // Changed from Add to AddItem
         Destroy(gameObject);
     }
 
-    private void OnMouseDown()
-    {
-        Pickup();
-    }
+
+
+
+    //private void OnMouseDown()
+    //{
+    //    Pickup();
+    //}
 }

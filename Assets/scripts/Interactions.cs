@@ -37,7 +37,17 @@ public class Interactions : MonoBehaviour
                     _doorAnimation.Open();
                 } 
                
-            }else pressE.SetActive(false);       
+            }else pressE.SetActive(false);
+            if (hitinfo.collider.CompareTag("items"))
+            {
+                Debug.DrawRay(transform.position, forwardDirection*2, Color.green) ;
+                pressE.SetActive(true);
+                if(Input.GetKeyDown(KeyCode.E))
+                {
+                    itemPickup _itempickup = hitinfo.collider.GetComponent<itemPickup>();
+                    _itempickup.Pickup();
+                }
+            }
         }
 
     }

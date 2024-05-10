@@ -23,7 +23,7 @@ public class manager : MonoBehaviour
         }
     }
 
-    public void AddItem(item newItem)
+    public void ADD(item newItem)
     {
         items.Add(newItem);
     }
