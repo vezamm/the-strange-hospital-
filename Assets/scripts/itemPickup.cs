@@ -15,8 +15,8 @@ public class itemPickup : MonoBehaviour
 
 
 
-    //private void OnMouseDown()
-    //{
-    //    Pickup();
-    //}
+   private void OnMouseDown()
+   {
+       Pickup();
+   }
 }
