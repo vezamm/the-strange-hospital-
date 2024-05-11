@@ -5,12 +5,14 @@ using UnityEngine;
 public class tp : MonoBehaviour
 {
     public Transform respawnpoint;
-    private void OnTriggerEnter(Collider other)
+    public GameObject Player;
+    private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.tag=="Player"&& Input.GetKeyDown(KeyCode.E))
         {
-            other.transform.position=respawnpoint.position;
             Debug.Log("tped");
+            Player.transform.position=respawnpoint.position;
         }
     }
+
 }

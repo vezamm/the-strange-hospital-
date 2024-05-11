@@ -9,6 +9,8 @@ public class Interactions : MonoBehaviour
     public GameObject pressE;
     public item _item;
     public Uiscripts _uiscripts;
+    public Transform respawnpoint;
+    public GameObject Player;
     
     // Start is called before the first frame update
     void Start()
@@ -25,13 +27,13 @@ public class Interactions : MonoBehaviour
     {
         RaycastHit hitinfo;
         var ray = cam.ScreenPointToRay(Input.mousePosition);
-        //Vector3 forwardDirection=transform.forward;
-        //Debug.DrawRay(transform.position,forwardDirection*2, Color.red) ;
+        Vector3 forwardDirection=transform.forward;
+        Debug.DrawRay(transform.position,forwardDirection*2, Color.red) ;
         if(Physics.Raycast(ray, out hitinfo,2))
         {
             if(hitinfo.collider.CompareTag("MorgueDoor"))
             {
-                   //Debug.DrawRay(transform.position,forwardDirection*2, Color.green) ;
+                   Debug.DrawRay(transform.position,forwardDirection*2, Color.green) ;
                 pressE.SetActive(true);
                 if(Input.GetKeyDown(KeyCode.E)) 
                 {
@@ -42,7 +44,7 @@ public class Interactions : MonoBehaviour
             }else pressE.SetActive(false);
             if (hitinfo.collider.CompareTag("items"))
             {
-                //Debug.DrawRay(transform.position, forwardDirection*2, Color.green) ;
+                Debug.DrawRay(transform.position, forwardDirection*2, Color.green) ;
                 pressE.SetActive(true);
                 if(Input.GetKeyDown(KeyCode.E))
                 {
@@ -58,7 +60,21 @@ public class Interactions : MonoBehaviour
                     _uiscripts.openinventory();
                 }
             }
+            if (hitinfo.collider.CompareTag("VALVE"))
+            {
+                pressE.SetActive(true);
+                Debug.DrawRay(transform.position, forwardDirection * 2, Color.green);
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    Debug.Log("cbon");
+                    getteleported();
+                }
+            }
         }
 
+    }
+    public void getteleported()
+    {
+        Player.transform.position = respawnpoint.position;
     }
 }
